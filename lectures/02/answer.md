@@ -3,7 +3,7 @@
 ## 演習
 
 - 使ったモデル・設定（`result.json` の `config` から）：`Qwen/Qwen3.5-0.8B`（revision `2fc0636`）、LoRA（量子化なし）、`lora_r` 16、`lora_alpha` 32、`lr` 2e-4、`num_train_epochs` 20、`warmup_steps` 6、`seed` 42、貪欲生成（`do_sample: false`）。transformers 5.18.0、peft 0.21.1、trl 1.14.2、torch 2.11.0+cu130、Colab T4。
-- 自分で学習を実行したか（`executed_training_myself`）：はい
+- 自分で学習を実行したか（`executed_training_myself`）：はい（実行したノートブックを、セルの出力を付けたまま `lectures/02/lora_format_tuning.ipynb` に置いた）
 - 学習前：`format_rate` = 0.10（2/21） / `content_rate` = 0.00（0/21）
 - 学習後：`format_rate` = 1.00（21/21） / `content_rate` = 0.90（19/21）
 - 退行した質問：なし（学習前に形式と内容の両方が通った質問が無いため、空になるのは当然）
