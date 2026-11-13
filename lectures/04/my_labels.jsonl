@@ -7,4 +7,4 @@
 {"id": "07", "grounding": "fail", "scope": "fail", "hint": "fail", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": "回答を書いてしまっている"}
 {"id": "08", "grounding": "fail", "scope": "fail", "hint": "fail", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": ""}
 {"id": "09", "grounding": "fail", "scope": "fail", "hint": "fail", "clarity": "fail", "lecture_mark": "fail", "unsure_flag": false, "note": ""}
-{"id": "10", "grounding": "fail", "scope": "fail", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": ""}
+{"id": "10", "grounding": "fail", "scope": "pass", "hint": "pass", "clarity": "pass", "lecture_mark": "pass", "unsure_flag": false, "note": ""}
