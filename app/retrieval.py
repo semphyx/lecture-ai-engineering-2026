@@ -16,7 +16,7 @@ import sqlite_vec
 
 from app.config import (
     EMBEDDING_DIMENSIONS, EMBEDDING_MAX_TOKENS, EMBEDDING_MODEL,
-    RAG_DB, RAG_DOCUMENT_IDS, RAG_SOURCE, RAG_TOP_K, RAG_TREE, get_api_key,
+    RAG_DB, RAG_DOCUMENT_IDS, RAG_NEIGHBORS, RAG_SOURCE, RAG_TOP_K, RAG_TREE, get_api_key,
     RAG_GRAPH, GRAPH_START_K, GRAPH_HOPS, GRAPH_MAX_RESULTS,
 )
 
@@ -136,6 +136,31 @@ def search(query: str) -> list[dict]:
             FROM chunks ORDER BY distance, page_id LIMIT ?
         """, (sqlite_vec.serialize_float32(vector), RAG_TOP_K))
         return [dict(row) for row in rows]
+
+
+def add_neighbors(hits: list[dict], window: int = RAG_NEIGHBORS) -> list[dict]:
+    """検索結果の前後 window ページの本文も付ける。別の資料はまたがず、同じページは1回だけ返す。"""
+    if window <= 0:
+        return hits
+    by_document = defaultdict(dict)
+    for page in load_pages(RAG_SOURCE):
+        by_document[page["document_id"]][page["page"]] = page
+    hit_ids = {hit["page_id"] for hit in hits}
+    results, seen = [], set()
+    for hit in hits:
+        pages = by_document[hit["document_id"]]
+        for offset in range(-window, window + 1):
+            page = hit if offset == 0 else pages.get(hit["page"] + offset)
+            if page is None or page["page_id"] in seen:
+                continue
+            if offset != 0 and page["page_id"] in hit_ids:
+                continue  # 別の検索結果として本文ごと返すので、前後ページとしては付けない
+            seen.add(page["page_id"])
+            if offset == 0:
+                results.append({**hit, "role": "hit"})
+            else:
+                results.append({**page, "role": "neighbor", "neighbor_of": hit["page_id"], "offset": offset})
+    return results
 
 
 def search_graph(query: str) -> dict:
