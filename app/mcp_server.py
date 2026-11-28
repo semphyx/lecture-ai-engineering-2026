@@ -29,6 +29,9 @@ server.tool()(tools.search_glossary)
 
 # TODO(宿題・基礎): get_lecture_summary も公開しよう
 
+# 宿題（実装）: 第3回の演習で作る make_quiz を公開する。範囲外の回は、分かりやすいメッセージを return で返す
+server.tool()(tools.make_quiz)
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="用語集 MCP サーバー")
